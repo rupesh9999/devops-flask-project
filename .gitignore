@@ -1,0 +1,81 @@
+# Local Terraform directories
+**/.terraform/
+
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Sensitive variable files (if not managed separately)
+*.tfvars
+*.tfvars.json
+
+# Terraform override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform plan files
+*.tfplan
+
+# Terraform CLI configuration files
+.terraformrc
+terraform.rc
+
+# Provider lock file (consider committing if consistent provider versions are critical)
+.terraform.lock.hcl
+
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# IDE/Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# Logs and temp files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.DS_Store
+.env
+
+# Build artifacts (adjust for your language/framework)
+node_modules/
+dist/
+build/
+*.o
+*.exe
+*.dll
+__pycache__/
+*.pyc
+*.pyo
+
+# Dependencies (if using package managers)
+# For Node.js: node_modules/
+# For Python: venv/
+# For Ruby: .bundle/
+
+# OS-generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
