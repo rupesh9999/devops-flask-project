@@ -20,14 +20,14 @@ SERVICE_NAME="flask-app"
 IP_ALLOWLIST="${ip_allowlist}"
 ALLOWLIST_FILE="/etc/nginx/ip-allowlist.conf"
 
-mkdir -p "${APP_DIR}"
-if [ ! -d "${APP_DIR}/.git" ]; then
-  git clone "${REPO_URL}" "${APP_DIR}"
+mkdir -p "$${APP_DIR}"
+if [ ! -d "$${APP_DIR}/.git" ]; then
+  git clone "$${REPO_URL}" "$${APP_DIR}"
 else
-  cd "${APP_DIR}" && git pull --rebase
+  cd "$${APP_DIR}" && git pull --rebase
 fi
 
-cd "${APP_DIR}/app/flask_app"
+cd "$${APP_DIR}/app/flask_app"
 python3 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
@@ -36,11 +36,11 @@ pip install -r requirements.txt
 deactivate
 
 cat <<ENVVARS > /etc/flask-app.env
-DATABASE_URL="mysql+pymysql://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:3306/${DB_NAME}"
-FLASK_ENV="${ENVIRONMENT}"
+DATABASE_URL="mysql+pymysql://$${DB_USERNAME}:$${DB_PASSWORD}@$${DB_HOST}:3306/$${DB_NAME}"
+FLASK_ENV="$${ENVIRONMENT}"
 ENVVARS
 
-cat <<'UNIT' > /etc/systemd/system/${SERVICE_NAME}.service
+cat <<'UNIT' > /etc/systemd/system/$${SERVICE_NAME}.service
 [Unit]
 Description=Gunicorn instance to serve Flask app
 After=network.target
@@ -91,31 +91,31 @@ NGINX
 ln -sf /etc/nginx/sites-available/flask-app /etc/nginx/sites-enabled/flask-app
 rm -f /etc/nginx/sites-enabled/default
 
-SERVER_NAME_VALUE="${DOMAIN_NAME:-_}"
-sed -i "s/SERVER_NAME_PLACEHOLDER/${SERVER_NAME_VALUE}/" /etc/nginx/sites-available/flask-app
+SERVER_NAME_VALUE="$${DOMAIN_NAME:-_}"
+sed -i "s/SERVER_NAME_PLACEHOLDER/$${SERVER_NAME_VALUE}/" /etc/nginx/sites-available/flask-app
 
-echo "allow all;" > "${ALLOWLIST_FILE}"
-if [ -n "${IP_ALLOWLIST}" ]; then
-  IFS=',' read -ra ADDR <<< "${IP_ALLOWLIST}"
-  : > "${ALLOWLIST_FILE}"
-  for ip in "${ADDR[@]}"; do
+echo "allow all;" > "$${ALLOWLIST_FILE}"
+if [ -n "$${IP_ALLOWLIST}" ]; then
+  IFS=',' read -ra ADDR <<< "$${IP_ALLOWLIST}"
+  : > "$${ALLOWLIST_FILE}"
+  for ip in "$${ADDR[@]}"; do
     CLEANED_IP=$(echo "$ip" | xargs)
-    if [ -n "${CLEANED_IP}" ]; then
-      echo "allow ${CLEANED_IP};" >> "${ALLOWLIST_FILE}"
+    if [ -n "$${CLEANED_IP}" ]; then
+      echo "allow $${CLEANED_IP};" >> "$${ALLOWLIST_FILE}"
     fi
   done
-  echo "deny all;" >> "${ALLOWLIST_FILE}"
+  echo "deny all;" >> "$${ALLOWLIST_FILE}"
 fi
 
 systemctl daemon-reload
-systemctl enable ${SERVICE_NAME}
-systemctl restart ${SERVICE_NAME}
+systemctl enable $${SERVICE_NAME}
+systemctl restart $${SERVICE_NAME}
 
 nginx -t
 systemctl restart nginx
 
-if [ -n "${DOMAIN_NAME}" ] && [ -n "${ACME_EMAIL}" ]; then
-  certbot --nginx --non-interactive --agree-tos --redirect -m "${ACME_EMAIL}" -d "${DOMAIN_NAME}"
+if [ -n "$${DOMAIN_NAME}" ] && [ -n "$${ACME_EMAIL}" ]; then
+  certbot --nginx --non-interactive --agree-tos --redirect -m "$${ACME_EMAIL}" -d "$${DOMAIN_NAME}"
 fi
 
 ufw allow "Nginx Full"
