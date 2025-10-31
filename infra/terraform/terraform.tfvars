@@ -1,7 +1,7 @@
 aws_region          = "us-east-2"
 key_pair_name       = "my-keypair"
 db_password         = "SuperS3cret!"
-app_repo_url        = "https://github.com/your-org/devops-flask-project.git"
+app_repo_url        = "https://github.com/rupesh9999/devops-flask-project.git"
 domain_name         = "app.example.com"        # optional
 acme_email          = "admin@example.com"       # optional
 flask_allowed_cidr  = "203.0.113.0/24"          # optional tightening
